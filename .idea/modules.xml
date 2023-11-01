@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/as_video_recorder.iml" filepath="$PROJECT_DIR$/as_video_recorder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Android-as_video_recorder.iml" filepath="$PROJECT_DIR$/.idea/modules/Android-as_video_recorder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android-as_video_recorder.app.unitTest.iml" />
     </modules>
   </component>
 </project>
