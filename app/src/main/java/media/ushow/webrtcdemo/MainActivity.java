@@ -1,16 +1,23 @@
 package media.ushow.webrtcdemo;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.wireless.WirelessCameraActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +44,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.forward_wireless_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WirelessCameraActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     /**
@@ -57,23 +73,15 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 请求权限
-     *
-     * @param callback 回调
      */
     protected void requestPermissions() {
+        boolean isHas = true;
+        for (String it : permissions) {
+            isHas = isHas & ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED;
+        }
+        if (isHas) {
+            return;
+        }
         ActivityCompat.requestPermissions(this, permissions, 100);
-//
-//        {int requestCode, @NonNull String[] permissions,
-//            @NonNull int[] grantResults ->
-//            if (code == permissionsRequestCode) {
-//                if (results.all { it == PackageManager.PERMISSION_GRANTED }) {
-//                    Log.i(TAG, "已获得权限")
-//                    callback(true)
-//                } else {
-//                    Log.e(TAG, "未完全授权")
-//                    callback(false)
-//                }
-//            }
-//        }
     }
 }

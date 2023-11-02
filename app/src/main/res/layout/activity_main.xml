@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="media.ushow.webrtcdemo.MainActivity">
 
@@ -17,11 +18,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button android:id="@+id/forward_video_recorder"
+    <Button
+        android:layout_marginTop="100dp"
+        android:id="@+id/forward_video_recorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sample_text"
         android:layout_centerHorizontal="true"
         android:text="@string/forward_page"
-        />
-</android.support.constraint.ConstraintLayout>
+        tools:layout_editor_absoluteX="151dp"
+        tools:layout_editor_absoluteY="102dp" />
+
+    <Button
+        android:layout_marginTop="100dp"
+        android:id="@+id/forward_wireless_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sample_text"
+        android:layout_centerHorizontal="true"
+        android:text="进入无线相机页面"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="238dp" />
+</android.support.v7.widget.LinearLayoutCompat>
