@@ -54,6 +54,8 @@ static int fill_aac_packet_callback(LiveAudioPacket** packet, void *context) {
 	return videoPacketConsumer->getAudioPacket(packet);
 }
 int VideoConsumerThread::getAudioPacket(LiveAudioPacket ** audioPacket) {
+	LOGI("aacPacketPool->getAudioPacket");
+
 	if (aacPacketPool->getAudioPacket(audioPacket, true) < 0) {
 		LOGI("aacPacketPool->getAudioPacket return negetive value...");
 		return -1;
@@ -133,6 +135,8 @@ int VideoConsumerThread::init(char* videoOutputURI, int videoWidth, int videohei
 			return ret;
 		}
 		if (!isStopping) {
+			LOGI("videoPublisher->注册生产者");
+
 			statistics->connectSuccess();
 			packetPool->setStatistics(statistics);
 			videoPublisher->registerFillAACPacketCallback(fill_aac_packet_callback, this);
@@ -215,5 +219,7 @@ void VideoConsumerThread::handleRun(void* ptr) {
 			break;
 		}
 	}
+	LOGI("VideoConsumerThread::handleRun");
+
 }
 

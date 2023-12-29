@@ -124,11 +124,14 @@ public abstract class VideoRecordingStudio {
                         Videostudio.getInstance().connectSuccess();
                         VideoRecordingStudio.this.recordingStudioStateCallback.onConnectRTMPServerSuccessed();
                         startProducer(videoWidth, videoHeight, useHardWareEncoding, qualityStrategy);
+//                        Videostudio.getInstance().startReadFileToMakeMp4("/sdcard/input.aac","/sdcard/input.h264");
+
+
                     }
-                } catch (StartRecordingException exception) {
+                } catch (Exception exception) {
                     //启动录音失败，需要把资源销毁，并且把消费者线程停止掉
-                    stopRecording();
-                    VideoRecordingStudio.this.recordingStudioStateCallback.onStartRecordingException(exception);
+//                    stopRecording();
+//                    VideoRecordingStudio.this.recordingStudioStateCallback.onStartRecordingException(exception);
                 }
             }
         }.start();

@@ -2,7 +2,7 @@
 
 #define LOG_TAG "RecordingPublisher"
 
-bool verboseOn = false;
+bool verboseOn = true;
 
 RecordingPublisher::RecordingPublisher() {
     isConnected = false;
@@ -152,6 +152,8 @@ int RecordingPublisher::init(char *videoOutputURI,
 }
 
 int RecordingPublisher::encode() {
+    LOGI("RecordingPublisher::encode");
+
     int ret = 0;
     /* Compute current audio and video time. */
     double video_time = getVideoStreamTimeInSecs();

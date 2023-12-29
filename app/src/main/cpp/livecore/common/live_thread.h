@@ -2,12 +2,14 @@
 #define LIVE_THREAD_H
 
 #include <pthread.h>
+#include <thread>
 #include "../platform_dependent/platform_4_live_common.h"
 
 class LiveThread {
 public:
 	LiveThread();
-	~LiveThread();
+
+	virtual ~LiveThread();
 
 	void start();
 	void startAsync();
@@ -17,7 +19,8 @@ public:
 	void notify();
 	virtual void stop();
 
-protected:
+    void sleep(long mill);
+
 	bool mRunning;
 
 	virtual void handleRun(void* ptr);

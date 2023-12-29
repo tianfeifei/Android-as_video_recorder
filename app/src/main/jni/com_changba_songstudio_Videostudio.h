@@ -26,6 +26,11 @@ JNIEXPORT jint JNICALL Java_com_changba_songstudio_Videostudio_startCommonVideoR
 JNIEXPORT void JNICALL Java_com_changba_songstudio_Videostudio_stopVideoRecord
   (JNIEnv *, jobject);
 
+
+JNIEXPORT void JNICALL
+Java_com_changba_songstudio_Videostudio_startReadFileToMakeMp4(JNIEnv *, jobject , jstring ,
+                                                               jstring );
+
 #ifdef __cplusplus
 }
 #endif

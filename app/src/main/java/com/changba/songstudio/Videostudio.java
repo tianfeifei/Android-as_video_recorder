@@ -94,4 +94,7 @@ public class Videostudio {
         }
     }
 
+   //-----------------------------------------新增-------------------------------------
+
+    public native void startReadFileToMakeMp4(String aacFilePath,String h264FilePath);
 }

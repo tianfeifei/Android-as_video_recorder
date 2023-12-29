@@ -124,6 +124,8 @@ void LivePacketPool::pushAudioPacketToQueue(LiveAudioPacket* audioPacket) {
 
 void LivePacketPool::initRecordingVideoPacketQueue() {
     if(NULL == recordingVideoPacketQueue){
+        LOGI("%pLivePacketPool::initRecordingVideoPacketQueue", this);
+
         const char* name = "recording video yuv frame packet queue";
         recordingVideoPacketQueue = new LiveVideoPacketQueue(name);
         totalDiscardVideoPacketDuration = 0;
@@ -140,6 +142,8 @@ void LivePacketPool::abortRecordingVideoPacketQueue() {
 }
 
 void LivePacketPool::destoryRecordingVideoPacketQueue() {
+    LOGI("LivePacketPool::destoryRecordingVideoPacketQueue");
+
     if (NULL != recordingVideoPacketQueue) {
         delete recordingVideoPacketQueue;
         recordingVideoPacketQueue = NULL;

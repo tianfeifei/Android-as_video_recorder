@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.changba.songstudio.Videostudio;
 import com.wireless.WirelessCameraActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.forward_wireless_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WirelessCameraActivity.class);
-                startActivity(intent);
+                Videostudio.getInstance().startReadFileToMakeMp4("/sdcard/input.aac","/sdcard/input.h264");
+
             }
         });
 

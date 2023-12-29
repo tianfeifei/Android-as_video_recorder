@@ -75,8 +75,8 @@ public class CommonVideoRecordingStudio extends VideoRecordingStudio {
 
         qualityStrategy = ifQualityStrayegyEnable(qualityStrategy);
         return Videostudio.getInstance().startVideoRecord(outputPath,
-                videoWidth, videoHeight, VIDEO_FRAME_RATE, COMMON_VIDEO_BIT_RATE,
-                audioSampleRate, audioChannels, audioBitRate,
+                1920, 1080, 30, 6144,
+                16000, 1, audioBitRate,
                 qualityStrategy, adaptiveBitrateWindowSizeInSecs, adaptiveBitrateEncoderReconfigInterval,
                 adaptiveBitrateWarCntThreshold,adaptiveMinimumBitrate,adaptiveMaximumBitrate, recordingStudioStateCallback);
     }

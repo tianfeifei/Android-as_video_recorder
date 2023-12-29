@@ -3,11 +3,15 @@
 #define LOG_TAG "LiveThread"
 
 LiveThread::LiveThread() {
+	LOGI("LiveThread构造器");
 	pthread_mutex_init(&mLock, NULL);
 	pthread_cond_init(&mCondition, NULL);
 }
 
 LiveThread::~LiveThread() {
+	LOGI("LiveThread析构");
+	pthread_mutex_destroy(&mLock);
+	pthread_cond_destroy(&mCondition);
 }
 
 void LiveThread::start() {
@@ -51,6 +55,10 @@ void LiveThread::notify() {
 	pthread_mutex_lock(&mLock);
 	pthread_cond_signal(&mCondition);
 	pthread_mutex_unlock(&mLock);
+}
+
+void LiveThread::sleep(long mill) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(mill));
 }
 
 void LiveThread::handleRun(void* ptr) {

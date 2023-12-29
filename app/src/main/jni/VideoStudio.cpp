@@ -1,4 +1,6 @@
 #include "com_changba_songstudio_Videostudio.h"
+#include "h264_reader_thread.h"
+#include "aac_reader_thread.h"
 
 #define LOG_TAG "Videostudio"
 
@@ -64,4 +66,37 @@ JNIEXPORT void JNICALL Java_com_changba_songstudio_Videostudio_stopVideoRecord(J
 			g_obj = 0;
 		}
 	}
+}
+
+H264ReaderThread *h264Thread;
+
+AACReaderThread *aarThread;
+extern "C" JNIEXPORT void JNICALL
+Java_com_changba_songstudio_Videostudio_startReadFileToMakeMp4(JNIEnv *env, jobject thiz, jstring aac_file_path,
+															   jstring h264_file_path) {
+	char* h264Path = (char*) (env->GetStringUTFChars(h264_file_path, NULL));
+	char* aacPath = (char*) (env->GetStringUTFChars(aac_file_path, NULL));
+
+
+	if (h264Thread != nullptr) {
+		delete h264Thread;
+		h264Thread= nullptr;
+	}
+	char* h264PathRef = new char[strlen(h264Path)+1];
+	strcpy(h264PathRef,h264Path);
+	h264Thread = new H264ReaderThread(h264PathRef);
+	h264Thread->startAsync();
+
+
+	if (aarThread != nullptr) {
+		delete aarThread;
+		aarThread= nullptr;
+	}
+	char* aacPathRef=new char [strlen(aacPath)+1];
+	strcpy(aacPathRef,aacPath);
+	aarThread = new AACReaderThread(aacPathRef);
+	aarThread->startAsync();
+
+	env->ReleaseStringUTFChars(h264_file_path, h264Path);
+	env->ReleaseStringUTFChars(aac_file_path, aacPath);
 }

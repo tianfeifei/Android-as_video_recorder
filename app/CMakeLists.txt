@@ -20,6 +20,7 @@ include_directories(${PATH_TO_MEDIACORE}/)
 include_directories(${PATH_TO_MEDIACORE}/common/)
 include_directories(${PATH_TO_MEDIACORE}/camera_preview/)
 include_directories(${PATH_TO_MEDIACORE}/livecore/)
+include_directories(${PATH_TO_MEDIACORE}/recorde_fei/)
 include_directories(${PATH_TO_MEDIACORE}/livecore/common/)
 include_directories(${PATH_TO_MEDIACORE}/livecore/audio_encoder/)
 include_directories(${PATH_TO_MEDIACORE}/livecore/consumer/)
@@ -38,6 +39,7 @@ include_directories(${PATH_TO_MEDIACORE}/video_encoder/hw_encoder/)
 file(GLOB FILES_TEST "${PATH_TO_MEDIACORE}/*.cpp")
 file(GLOB FILES_JNI_LAYER "${PATH_TO_JNI_LAYER}/*.cpp")
 file(GLOB FILES_LIB_COMMON "${PATH_TO_MEDIACORE}/common/*.cpp")
+file(GLOB FILES_LIB_FEI "${PATH_TO_MEDIACORE}/recorde_fei/*.cpp")
 file(GLOB FILES_LIB_COMMON_EGL_CORE "${PATH_TO_MEDIACORE}/common/egl_core/*.cpp")
 file(GLOB FILES_LIB_COMMON_EGL_CORE "${PATH_TO_MEDIACORE}/common/egl_core/*.cpp")
 file(GLOB FILES_LIB_COMMON_RESAMPLER "${PATH_TO_MEDIACORE}/common/libresampler/*.cpp")
@@ -65,6 +67,7 @@ add_library(native-lib SHARED
         ${FILES_TEST}
         ${FILES_JNI_LAYER}
         ${FILES_LIB_COMMON}
+        ${FILES_LIB_FEI}
         ${FILES_LIB_COMMON_EGL_CORE}
         ${FILES_LIB_COMMON_MSG_Q}
         ${FILES_LIB_COMMON_RESAMPLER}

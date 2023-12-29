@@ -53,7 +53,7 @@ int VideoX264Encoder::encode(LiveVideoPacket * yuy2VideoPacket) {
 //		encodeOneFrameTotal = 0;
 //	}
 
-
+//todo 参考此处入队
 	if (ret < 0) {
 		LOGI("Error encoding video frame: %s\n", av_err2str(ret));
 		ret = -1;

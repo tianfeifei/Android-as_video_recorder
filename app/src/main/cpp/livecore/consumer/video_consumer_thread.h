@@ -7,6 +7,7 @@
 #include "./../common/live_audio_packet_pool.h"
 #include "../publisher/recording_h264_publisher.h"
 #include "../publisher/recording_publisher.h"
+#include <stdio.h>
 
 #define LIVE_AUDIO_PCM_OUTPUT_CHANNEL 2
 
@@ -14,6 +15,8 @@
 
 class VideoConsumerThread: public LiveThread {
 public:
+    AVFormatContext *formatContext = NULL;
+
     VideoConsumerThread();
     virtual ~VideoConsumerThread();
     int init(char* videoOutputURI,
@@ -48,9 +51,9 @@ public:
     typedef int (*on_statistics_callback)(long startTimeMills, int connectTimeMills, int publishDurationInSec,
     float discardFrameRatio, float publishAVGBitRate, float expectedBitRate, char* adaptiveBitrateChart, void *context);
     
-protected:
-    LivePacketPool* 							packetPool;
-    LiveAudioPacketPool* 					aacPacketPool;
+protected://todo 封装mp4
+    LivePacketPool* 							packetPool; //视频包的队列
+    LiveAudioPacketPool* 					aacPacketPool; //音频包队列
     /** 当我们停止发布的时候，会把统计数据回调给客户端进行上报服务器 **/
     PublisherStatistics* 					statistics;
     on_statistics_callback 					onStatisticsCallback;
