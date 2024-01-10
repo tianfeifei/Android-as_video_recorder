@@ -141,7 +141,9 @@ int RecordingH264Publisher::write_video_frame(AVFormatContext *oc, AVStream *st)
         for (i = 0; i < tmp2; i++)
             c->extradata[8 + tmp + 3 + i] = ppsFrame[4 + i];
 
-         ret = avformat_write_header(oc, NULL);
+        AVDictionary * opts = NULL ;
+        av_dict_set(&opts, "movflags", "frag_keyframe+empty_moov+default_base_moof ", 0);
+        ret = avformat_write_header(oc, &opts);
 
         if (ret < 0) {
             LOGI("Error occurred when opening output file: %s\n", av_err2str(ret));

@@ -114,6 +114,7 @@ int RecordingPublisher::init(char *videoOutputURI,
         return -1;
     }
     fmt = oc->oformat;
+//    av_opt_set(fmt->priv_class, "movflags", "frag_keyframe+empty_moov", 0);
 
     /* 3:add Video Stream and Audio Stream to Our AVFormatContext  */
     if ((ret = buildVideoStream()) < 0) {
