@@ -73,7 +73,7 @@ void AACReaderThread::handleRun(void *ptr) {
             audioPacket->position = (float) recordingDuration;
             aacPacketPool->pushAudioPacketToQueue(audioPacket);
             av_packet_unref(&packet);
-            sleep(70);
+            sleep(77);
         }
     }
     LOGI("成功放入音频队列%d", aacPacketPool->getAudioPacketQueueSize());

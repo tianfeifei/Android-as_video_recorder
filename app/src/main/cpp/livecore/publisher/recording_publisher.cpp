@@ -109,7 +109,7 @@ int RecordingPublisher::init(char *videoOutputURI,
     avformat_network_init();
     LOGI("Publish URL %s", videoOutputURI);
     /* 2:allocate the output media context */
-    avformat_alloc_output_context2(&oc, NULL, "mp4", videoOutputURI);
+    avformat_alloc_output_context2(&oc, NULL, NULL, videoOutputURI);
     if (!oc) {
         return -1;
     }
@@ -305,7 +305,7 @@ AVStream *RecordingPublisher::add_stream(AVFormatContext *oc, AVCodec **codec,
             c->time_base.den = 30000;
             c->time_base.num = (int) (30000 / videoFrameRate);
             /* gop_size 设置图像组大小 这里设置GOP大小，也表示两个I帧之间的间隔 */
-            c->gop_size = videoFrameRate;
+            c->gop_size = 300;
             /**  -qscale q  使用固定的视频量化标度(VBR)  以<q>质量为基础的VBR，取值0.01-255，约小质量越好，即qscale 4和-qscale 6，4的质量比6高 。
              * 					此参数使用次数较多，实际使用时发现，qscale是种固定量化因子，设置qscale之后，前面设置的-b好像就无效了，而是自动调整了比特率。
              *	 -qmin q 最小视频量化标度(VBR) 设定最小质量，与-qmax（设定最大质量）共用

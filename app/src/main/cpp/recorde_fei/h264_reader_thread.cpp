@@ -72,7 +72,7 @@ void H264ReaderThread::handleRun(void *ptr) {
 
             pushToQueue(&packet);
             av_packet_unref(&packet);
-            sleep(30);
+            sleep(40);
 
         }
     }
