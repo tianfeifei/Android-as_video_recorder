@@ -18,7 +18,7 @@
 typedef struct LiveVideoPacket {
     byte * buffer;
     int size;
-    int timeMills;
+    int64_t timeMills;
     int duration;
     int64_t pts;
     int64_t dts;

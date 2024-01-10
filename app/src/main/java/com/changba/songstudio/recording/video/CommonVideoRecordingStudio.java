@@ -75,7 +75,7 @@ public class CommonVideoRecordingStudio extends VideoRecordingStudio {
 
         qualityStrategy = ifQualityStrayegyEnable(qualityStrategy);
         return Videostudio.getInstance().startVideoRecord(outputPath,
-                1920, 1080, 30, 6144,
+                1920, 1080, 25, 4096*1024,
                 16000, 1, audioBitRate,
                 qualityStrategy, adaptiveBitrateWindowSizeInSecs, adaptiveBitrateEncoderReconfigInterval,
                 adaptiveBitrateWarCntThreshold,adaptiveMinimumBitrate,adaptiveMaximumBitrate, recordingStudioStateCallback);
@@ -91,7 +91,7 @@ public class CommonVideoRecordingStudio extends VideoRecordingStudio {
             playerService.start();
         }
         if (recorderService != null) {
-            return recorderService.start(videoWidth, videoHeight, VideoRecordingStudio.getInitializeVideoBitRate(), VIDEO_FRAME_RATE, useHardWareEncoding, strategy);
+            return recorderService.start(videoWidth, videoHeight, 4096*1024, 25, useHardWareEncoding, strategy);
         }
 
         return false;

@@ -78,7 +78,6 @@ void RecordingH264Publisher::parseH264SequenceHeader(uint8_t *in_pBuffer, uint32
 int RecordingH264Publisher::write_video_frame(AVFormatContext *oc, AVStream *st) {
     int ret = 0;
     AVCodecContext *c = st->codec;
-    LOGI("write_video_frame");
 
     /** 1、调用注册的回调方法来拿到我们的h264的EncodedData **/
     LiveVideoPacket *h264Packet = NULL;
@@ -94,6 +93,7 @@ int RecordingH264Publisher::write_video_frame(AVFormatContext *oc, AVStream *st)
     /** 2、填充起来我们的AVPacket **/
     AVPacket pkt = {0};
     av_init_packet(&pkt);
+
     pkt.stream_index = st->index;
 //    int64_t pts = lastPresentationTimeMs / 1000.0f / av_q2d(video_st->time_base);
     int64_t cal_pts = lastPresentationTimeMs / 1000.0f / av_q2d(video_st->time_base);
@@ -102,7 +102,7 @@ int RecordingH264Publisher::write_video_frame(AVFormatContext *oc, AVStream *st)
                                                                        ? AV_NOPTS_VALUE : h264Packet->dts;
 //    LOGI("h264Packet is {%llu, %llu}", h264Packet->pts, h264Packet->dts);
     int nalu_type = (outputData[4] & 0x1F);
-//    LOGI("Final is {%llu, %llu} nalu_type is %d", pts, dts, nalu_type);
+    LOGI(" nalu_type is %d", nalu_type);
     if (nalu_type == H264_NALU_TYPE_SEQUENCE_PARAMETER_SET) {
         //我们这里要求sps和pps一块拼接起来构造成AVPacket传过来
         headerSize = bufferSize;
@@ -141,7 +141,8 @@ int RecordingH264Publisher::write_video_frame(AVFormatContext *oc, AVStream *st)
         for (i = 0; i < tmp2; i++)
             c->extradata[8 + tmp + 3 + i] = ppsFrame[4 + i];
 
-        int ret = avformat_write_header(oc, NULL);
+         ret = avformat_write_header(oc, NULL);
+
         if (ret < 0) {
             LOGI("Error occurred when opening output file: %s\n", av_err2str(ret));
         } else {
@@ -183,21 +184,30 @@ int RecordingH264Publisher::write_video_frame(AVFormatContext *oc, AVStream *st)
             pkt.flags = 0;
             c->frame_number++;
         }
+
         /** 3、写出数据 **/
-        if (pkt.size) {
-            LOGI("pkt : {%llu, %llu}", pkt.pts, pkt.dts);
+//        int nalu_type = (pkt.data[4] & 0x1F);
+
+        if (pkt.size ) {
+
+            LOGI("interleavedWriteFrame pkt : {pts=%llu, duration=%d,flags=%d,nalu_type=%d,size=%d,stream_index=%d}",
+                 pkt.pts, pkt.duration, pkt.flags, nalu_type, pkt.size, pkt.stream_index);
+
+            LOGI("interleavedWriteFrame pkt data: %02X %02X %02X %02X %02X %02X %02X %02X", pkt.data[0], pkt.data[1], pkt.data[2],
+                 pkt.data[3],pkt.data[4],pkt.data[5],pkt.data[6],pkt.data[7]);
+            oc->debug=1;
             ret = RecordingPublisher::interleavedWriteFrame(oc, &pkt);
             if (ret != 0) {
                 LOGI("Error while writing Video frame: %s\n", av_err2str(ret));
             }
-            LOGI("interleavedWriteFrame");
-
 //            av_free_packet(&pkt);
         } else {
             ret = 0;
         }
+
     }
     delete h264Packet;
+
     return ret;
 }
 

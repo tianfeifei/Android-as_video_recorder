@@ -34,6 +34,9 @@ public:
 
 
     void handleRun(void *ptr);
+private:
+    int64_t startTime=-1;
+
 };
 
 #endif //ANDROID_AS_VIDEO_RECORDER_AAC_READER_THREAD_H

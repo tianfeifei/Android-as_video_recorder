@@ -139,7 +139,7 @@ int AACAccompanyDecoder::init(const char* audioFile) {
 		}
 	}
 	LOGI("channels is %d sampleRate is %d", avCodecContext->channels, avCodecContext->sample_rate);
-	pAudioFrame = avcodec_alloc_frame();
+	pAudioFrame = av_frame_alloc();
 //	LOGI("leave AACAccompanyDecoder::init");
 	return 1;
 }

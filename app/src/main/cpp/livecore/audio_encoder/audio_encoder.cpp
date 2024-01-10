@@ -109,7 +109,7 @@ int AudioEncoder::alloc_audio_stream(const char * codec_name) {
 	avCodecContext->channels = av_get_channel_layout_nb_channels(avCodecContext->channel_layout);
 	avCodecContext->profile = FF_PROFILE_AAC_LOW;
 	LOGI("avCodecContext->channels is %d", avCodecContext->channels);
-	avCodecContext->flags |= CODEC_FLAG_GLOBAL_HEADER;
+	avCodecContext->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 	avCodecContext->codec_id = codec->id;
 	if (avcodec_open2(avCodecContext, codec, NULL) < 0) {
 		LOGI("Couldn't open codec");
@@ -121,7 +121,7 @@ int AudioEncoder::alloc_audio_stream(const char * codec_name) {
 
 int AudioEncoder::alloc_avframe() {
 	int ret = 0;
-	encode_frame = avcodec_alloc_frame();
+	encode_frame = av_frame_alloc();
 	if (!encode_frame) {
 		LOGI("Could not allocate audio frame\n");
 		return -1;
@@ -135,7 +135,7 @@ int AudioEncoder::alloc_avframe() {
      * 这个地方原来是10000就导致了编码frame的时候有9个2048一个1568 其实编码解码是没有问题的
      * 但是在我们后续的sox处理的时候就会有问题，这里一定要注意注意 所以改成了10240
      */
-    audio_nb_samples = avCodecContext->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE ? 10240 : avCodecContext->frame_size;
+    audio_nb_samples = avCodecContext->codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE ? 10240 : avCodecContext->frame_size;
     int src_samples_linesize;
     ret = av_samples_alloc_array_and_samples(&audio_samples_data, &src_samples_linesize, avCodecContext->channels, audio_nb_samples, avCodecContext->sample_fmt, 0);
     if (ret < 0) {

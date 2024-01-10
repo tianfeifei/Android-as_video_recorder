@@ -25,10 +25,10 @@ int VideoX264Encoder::init(int width, int height, int videoBitRate, float frameR
     return 0;
 }
 
+//demo 软编走这个逻辑
 int VideoX264Encoder::encode(LiveVideoPacket * yuy2VideoPacket) {
 //	static int long count = 0;
 //	static int encodeOneFrameTotal = 0;
-
 	memcpy(yuy2_picture_buf, yuy2VideoPacket->buffer, yuy2VideoPacket->size);
 	yuy2_to_yuv420p(video_yuy2_frame->data, video_yuy2_frame->linesize, pCodecCtx->width, pCodecCtx->height, pFrame->data, pFrame->linesize);
 	int presentationTimeMills = yuy2VideoPacket->timeMills;
@@ -225,8 +225,8 @@ int VideoX264Encoder::allocVideoStream(int width, int height, int videoBitRate, 
 		//cbr模式设置
 		pCodecCtx->rc_initial_buffer_occupancy = pCodecCtx->rc_buffer_size * 3
 				/ 4;
-		pCodecCtx->rc_buffer_aggressivity = (float) 1.0;
-		pCodecCtx->rc_initial_cplx = 0.5;
+//		pCodecCtx->rc_buffer_aggressivity = (float) 1.0;
+//		pCodecCtx->rc_initial_cplx = 0.5;
 		pCodecCtx->qcompress = 0;
 	}else{
 		//vbr模式
@@ -234,7 +234,7 @@ int VideoX264Encoder::allocVideoStream(int width, int height, int videoBitRate, 
 			 * 					此参数使用次数较多，实际使用时发现，qscale是种固定量化因子，设置qscale之后，前面设置的-b好像就无效了，而是自动调整了比特率。
 			 *	 -qmin q 最小视频量化标度(VBR) 设定最小质量，与-qmax（设定最大质量）共用
 			 *	 -qmax q 最大视频量化标度(VBR) 使用了该参数，就可以不使用qscale参数  **/
-		pCodecCtx->flags |= CODEC_FLAG_QSCALE;
+//		pCodecCtx->flags |= CODEC_FLAG_QSCALE;
 		pCodecCtx->i_quant_factor = 0.8;
 		pCodecCtx->qmin = 10;
 		pCodecCtx->qmax = 30;

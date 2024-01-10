@@ -165,7 +165,7 @@ void SoftEncoderAdapter::loadTexture() {
     videoPacket->buffer = packetBuffer;
     videoPacket->size = pixelSize;
     videoPacket->timeMills = recordingDuration;
-//	LOGI("recordingDuration 【%d】", recordingDuration);
+	LOGI("recordingDuration 【%d】", recordingDuration);
     yuy2PacketPool->pushYUY2PacketToQueue(videoPacket);
 }
 

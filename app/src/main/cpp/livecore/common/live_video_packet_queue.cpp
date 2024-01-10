@@ -73,8 +73,7 @@ int LiveVideoPacketQueue::put(LiveVideoPacket* pkt) {
 	mLast = pkt1;
 	mNbPackets++;
 	pthread_cond_signal(&mCondition);
-    LOGI("%p LiveVideoPacketQueue::put,signal, size=%d,mCondition=%p,mLock=%p", this,mNbPackets,&mCondition,&mLock);
-
+    LOGI("LiveVideoPacketQueue::put,signal, size=%d", mNbPackets);
     pthread_mutex_unlock(&mLock);
 	return 0;
 }
@@ -181,10 +180,8 @@ int LiveVideoPacketQueue::get(LiveVideoPacket **pkt, bool block) {
             ret = 0;
             break;
         } else {
-            LOGI("%p LiveVideoPacketQueue::get,waiting, mCondition=%p,mLock=%p", this,&mCondition,&mLock);
             pthread_cond_wait(&mCondition, &mLock);
-            LOGI("LiveVideoPacketQueue::get,end wait");
-
+            LOGI("LiveVideoPacketQueue::get, wait end");
         }
     }
     pthread_mutex_unlock(&mLock);

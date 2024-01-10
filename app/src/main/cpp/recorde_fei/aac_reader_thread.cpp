@@ -58,17 +58,22 @@ void AACReaderThread::handleRun(void *ptr) {
     while (av_read_frame(formatContext, &packet) >= 0) {
         if (packet.stream_index == audioStreamIndex) {
             // 处理音频帧数据（例如：保存到内存、处理等）
-            packet.pts = currentTimeMills();
-            packet.dts = packet.pts;
+            if (startTime == -1)
+                startTime = getCurrentTime();
+            int recordingDuration = getCurrentTime() - startTime;
+
+
+            packet.pts = -1;
+            packet.dts = -1;
             LOGI("av_read_frame:size=%d, pts=%lld", packet.size, packet.pts);
             LiveAudioPacket *audioPacket = new LiveAudioPacket();
             audioPacket->data = new byte[packet.size];
             memcpy(audioPacket->data, packet.data, packet.size);
             audioPacket->size = packet.size;
-            audioPacket->position = (float) (packet.pts * av_q2d(time_base) * 1000.0f);
+            audioPacket->position = (float) recordingDuration;
             aacPacketPool->pushAudioPacketToQueue(audioPacket);
             av_packet_unref(&packet);
-            sleep(30);
+            sleep(70);
         }
     }
     LOGI("成功放入音频队列%d", aacPacketPool->getAudioPacketQueueSize());

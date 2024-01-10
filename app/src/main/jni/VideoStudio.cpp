@@ -7,6 +7,37 @@
 VideoPacketConsumerThread* videoPacketConsumerThread = NULL;
 jobject g_obj = 0;
 
+
+void your_log_callback(void* avcl, int level, const char* format, va_list args) {
+	// 转换FFmpeg日志级别到Android日志级别
+	int androidLevel;
+	switch (level) {
+		case AV_LOG_DEBUG:
+			androidLevel = ANDROID_LOG_DEBUG;
+			break;
+		case AV_LOG_INFO:
+			androidLevel = ANDROID_LOG_INFO;
+			break;
+		case AV_LOG_WARNING:
+			androidLevel = ANDROID_LOG_WARN;
+			break;
+		case AV_LOG_ERROR:
+			androidLevel = ANDROID_LOG_ERROR;
+			break;
+		default:
+			androidLevel = ANDROID_LOG_UNKNOWN;
+			break;
+	}
+
+	// 格式化日志消息
+	char logMessage[256];
+	vsnprintf(logMessage, sizeof(logMessage), format, args);
+
+	// 打印日志到Android日志系统
+	__android_log_write(androidLevel, "FFmpeg", logMessage);
+}
+
+
 JNIEXPORT jint JNICALL Java_com_changba_songstudio_Videostudio_startCommonVideoRecord(JNIEnv * env, jobject obj, jstring outputPath,
 		jint videoWidth, jint videoheight, jint videoFrameRate, jint videoBitRate,jint audioSampleRate, jint audioChannels,
 		jint audioBitRate,
@@ -17,6 +48,12 @@ JNIEXPORT jint JNICALL Java_com_changba_songstudio_Videostudio_startCommonVideoR
 		jint adaptiveMinimumBitrate,
 		jint adaptiveMaximumBitrate
 		) {
+	//设置监听ffmpeg日志
+	av_log_set_level(AV_LOG_DEBUG);
+    // 设置FFmpeg内部日志回调函数
+	av_log_set_callback(your_log_callback); // 替换为你自己的日志回调函数
+
+
 	int initCode = 0;
 	JavaVM *g_jvm = NULL;
 	env->GetJavaVM(&g_jvm);

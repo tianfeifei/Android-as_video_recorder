@@ -12,7 +12,7 @@ H264ReaderThread::H264ReaderThread(char *h264Path) : LiveThread() {
     LOGI("H264ReaderThread-->%s", path);
     packetPool = LiveCommonPacketPool::GetInstance();
     LOGI("LivePacketPool1-->%p", packetPool);
-
+    isSPSUnWriteFlag= true;
     packetPool->initRecordingVideoPacketQueue();
 }
 
@@ -61,23 +61,16 @@ void H264ReaderThread::handleRun(void *ptr) {
         return;
     }
 
-
     // 读取一帧数据
     while (av_read_frame(formatContext, &packet) >= 0) {
         if (packet.stream_index == videoStreamIndex) {
             // 处理音频帧数据（例如：保存到内存、处理等）
+
             //todo pts 赋值，直接取当前时间
-            packet.pts = currentTimeMills();
-            packet.dts = packet.pts;
+            packet.pts = -1;
+            packet.dts = -1;
 
-
-            LiveVideoPacket *h264Packet = new LiveVideoPacket();
-            h264Packet->timeMills = packet.pts;
-            h264Packet->buffer = new byte[packet.size];
-            memcpy(h264Packet->buffer, packet.data, packet.size);
-            h264Packet->size = packet.size;
-            packetPool->pushRecordingVideoPacketToQueue(h264Packet);
-//            pushToQueue(&packet);
+            pushToQueue(&packet);
             av_packet_unref(&packet);
             sleep(30);
 
@@ -91,8 +84,8 @@ void H264ReaderThread::stop() {}
 
 void H264ReaderThread::pushToQueue(AVPacket *pkt) {
     AVRational time_base = {1, 1000};
-    int presentationTimeMills = pkt->pts * av_q2d(time_base) * 1000.0f;
-    LOGI("pkt : {%llu, %llu}", pkt->pts, pkt->dts);
+    int64_t presentationTimeMills = pkt->pts * av_q2d(time_base) * 1000.0f;
+//    LOGI("pkt : {%llu, %llu}", pkt->pts, pkt->dts);
     int nalu_type = (pkt->data[4] & 0x1F);
     bool isKeyFrame = false;
     byte *frameBuffer;
@@ -106,6 +99,7 @@ void H264ReaderThread::pushToQueue(AVPacket *pkt) {
         vector<NALUnit *> *units = new vector<NALUnit *>();
         parseH264SpsPps(pkt->data, pkt->size, units);
         if (isSPSUnWriteFlag) {
+
             NALUnit *spsUnit = units->at(0);
             uint8_t *spsFrame = spsUnit->naluBody;
             int spsFrameLen = spsUnit->naluSize;
@@ -191,10 +185,16 @@ void H264ReaderThread::pushToQueue(AVPacket *pkt) {
             this->newLiveVideoPacket(frameBuffer, frameBufferSize, presentationTimeMills));
 }
 
-LiveVideoPacket *H264ReaderThread::newLiveVideoPacket(byte *buffer, int size, int timeMills) {
+LiveVideoPacket *H264ReaderThread::newLiveVideoPacket(byte *buffer, int size, int64_t timeMills) {
+    if (startTime == -1)
+        startTime = getCurrentTime();
+    int recordingDuration = getCurrentTime() - startTime;
+
     LiveVideoPacket *h264Packet = new LiveVideoPacket();
     h264Packet->buffer = buffer;
     h264Packet->size = size;
-    h264Packet->timeMills = timeMills;
+    h264Packet->timeMills = recordingDuration;
+    h264Packet->pts = -1;
+    h264Packet->dts = -1;
     return h264Packet;
 }

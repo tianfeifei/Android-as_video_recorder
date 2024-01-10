@@ -12,7 +12,7 @@ public:
     virtual int stop();
     
 protected:
-    int lastPresentationTimeMs;
+    int64_t lastPresentationTimeMs;
     
     /** 4、为视频流写入一帧数据 **/
     virtual int write_video_frame(AVFormatContext *oc, AVStream *st);

@@ -41,6 +41,10 @@ import java.io.File;
 import media.ushow.utils.FilePathUtil;
 
 public class VideoRecorderActivity extends Activity implements OnClickListener {
+    static {
+        System.loadLibrary("native-lib");
+    }
+
     // private static final int ONE_MINUTE = 1 * 60 * 1000;
     public static final int STANDARD_SONG = 101; // 标准伴奏
     public static final int SELF_SONG = 102; // 手机里的伴奏或者第三方下载的伴奏
@@ -164,7 +168,7 @@ public class VideoRecorderActivity extends Activity implements OnClickListener {
         int height = 640;
         int bitRateKbs = 900;
         int audioSampleRate = recordingStudio.getRecordSampleRate();
-        recordingStudio.startVideoRecording(FilePathUtil.getVideoRecordingFilePath(),bitRateKbs, width, height,
+        recordingStudio.startVideoRecording(FilePathUtil.getVideoPlayFilePath(),bitRateKbs, width, height,
         		audioSampleRate,0, adaptiveBitrateWindowSizeInSecs, adaptiveBitrateEncoderReconfigInterval, 
         		adaptiveBitrateWarCntThreshold,300, 800, isUseHWEncoder);
     }

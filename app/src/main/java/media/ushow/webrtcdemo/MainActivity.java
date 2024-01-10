@@ -18,14 +18,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.changba.songstudio.Videostudio;
-import com.wireless.WirelessCameraActivity;
+//import com.wireless.WirelessCameraActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
 
     private Button forward_video_recorder;
 
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         requestPermissions();
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+//        tv.setText(stringFromJNI());
         forward_video_recorder = (Button) findViewById(R.id.forward_video_recorder);
         forward_video_recorder.setOnClickListener(new View.OnClickListener() {
             @Override

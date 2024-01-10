@@ -142,8 +142,6 @@ void LivePacketPool::abortRecordingVideoPacketQueue() {
 }
 
 void LivePacketPool::destoryRecordingVideoPacketQueue() {
-    LOGI("LivePacketPool::destoryRecordingVideoPacketQueue");
-
     if (NULL != recordingVideoPacketQueue) {
         delete recordingVideoPacketQueue;
         recordingVideoPacketQueue = NULL;
@@ -168,6 +166,8 @@ bool LivePacketPool::detectDiscardVideoPacket(){
 }
 
 bool LivePacketPool::pushRecordingVideoPacketToQueue(LiveVideoPacket* videoPacket) {
+    LOGI("pushRecordingVideoPacketToQueue->pkt.getNALUType=%d",videoPacket->getNALUType());
+
     bool dropFrame = false;
     if (NULL != recordingVideoPacketQueue) {
         while (detectDiscardVideoPacket()) {

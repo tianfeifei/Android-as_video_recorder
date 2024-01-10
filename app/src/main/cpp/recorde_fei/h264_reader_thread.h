@@ -28,9 +28,10 @@ public:
 
 private:
     bool isSPSUnWriteFlag;
+    int64_t startTime=-1;
 
     void pushToQueue(AVPacket *pkt);
-    LiveVideoPacket* newLiveVideoPacket(byte* buffer, int size, int timeMills);
+    LiveVideoPacket* newLiveVideoPacket(byte* buffer, int size, int64_t timeMills);
 };
 
 #endif //H264_READER_THREAD_H

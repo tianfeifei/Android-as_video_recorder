@@ -109,7 +109,7 @@ int RecordingPublisher::init(char *videoOutputURI,
     avformat_network_init();
     LOGI("Publish URL %s", videoOutputURI);
     /* 2:allocate the output media context */
-    avformat_alloc_output_context2(&oc, NULL, "flv", videoOutputURI);
+    avformat_alloc_output_context2(&oc, NULL, "mp4", videoOutputURI);
     if (!oc) {
         return -1;
     }
@@ -163,8 +163,10 @@ int RecordingPublisher::encode() {
     }
     /* write interleaved audio and video frames */
     if (!video_st || (video_st && audio_st && audio_time < video_time)) {
+        LOGI("[TFF]write_audio_frame");
         ret = write_audio_frame(oc, audio_st);
     } else if (video_st) {
+        LOGI("[TFF]write_video_frame");
         ret = write_video_frame(oc, video_st);
     }
     sendLatestFrameTimemills = platform_4_live::getCurrentTimeMills();
@@ -288,7 +290,7 @@ AVStream *RecordingPublisher::add_stream(AVFormatContext *oc, AVCodec **codec,
             c->sample_rate = audioSampleRate;
             c->channel_layout = audioChannels == 1 ? AV_CH_LAYOUT_MONO : AV_CH_LAYOUT_STEREO;
             c->channels = av_get_channel_layout_nb_channels(c->channel_layout);
-            c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+            c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
             break;
         case AVMEDIA_TYPE_VIDEO:
             c->codec_id = AV_CODEC_ID_H264;
@@ -317,7 +319,7 @@ AVStream *RecordingPublisher::add_stream(AVFormatContext *oc, AVCodec **codec,
 
             /* Some formats want stream headers to be separate. */
             if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-                c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+                c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
             if (verboseOn)
                 LOGI("sample_aspect_ratio = %d   %d", c->sample_aspect_ratio.den,
@@ -328,7 +330,7 @@ AVStream *RecordingPublisher::add_stream(AVFormatContext *oc, AVCodec **codec,
     }
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
     return st;
 }
 

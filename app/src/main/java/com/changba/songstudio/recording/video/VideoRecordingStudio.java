@@ -123,8 +123,9 @@ public abstract class VideoRecordingStudio {
                     } else {
                         Videostudio.getInstance().connectSuccess();
                         VideoRecordingStudio.this.recordingStudioStateCallback.onConnectRTMPServerSuccessed();
-                        startProducer(videoWidth, videoHeight, useHardWareEncoding, qualityStrategy);
-//                        Videostudio.getInstance().startReadFileToMakeMp4("/sdcard/input.aac","/sdcard/input.h264");
+
+//                        startProducer(1920, 1080, useHardWareEncoding, qualityStrategy);
+                        Videostudio.getInstance().startReadFileToMakeMp4("/sdcard/input.aac","/sdcard/input.h264");
 
 
                     }
